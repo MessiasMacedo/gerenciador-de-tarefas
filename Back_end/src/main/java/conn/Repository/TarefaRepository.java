@@ -2,8 +2,10 @@ package conn.Repository;
 
 import conn.Model.Tarefa;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public abstract class TarefaRepository implements JpaRepository<Tarefa, Long> {
+@Repository
+public interface TarefaRepository extends JpaRepository<Tarefa, Long>{
 /*
 * aqui ele salva no banco
 * O Spring vai criar a implementação automaticamente

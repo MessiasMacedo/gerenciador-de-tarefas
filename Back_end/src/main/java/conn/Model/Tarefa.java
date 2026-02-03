@@ -11,17 +11,32 @@ public class Tarefa {
     private String titulo;
     private String descricao;
     private String prioridade;
-    private boolean status;
+    private boolean concluida;
+    ;
 
-    public Tarefa(long id, String titulo, String descricao, String prioridade, boolean status) {
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    public Tarefa() {
+    }
+
+    public Tarefa(long id, String titulo, String descricao, String prioridade, boolean concluida) {
         this.id = id;
         this.titulo = titulo;
         this.descricao = descricao;
         this.prioridade = prioridade;
-        this.status = false;
+        this.concluida = false;
     }
 
-    //GET and SETTS
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+//GET and SETTS
 
 
     public long getId() {
@@ -56,11 +71,13 @@ public class Tarefa {
         this.prioridade = prioridade;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean getConcluida() {
+        return concluida;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setConcluida(boolean concluida) {
+        this.concluida = concluida;
     }
 }
+
+

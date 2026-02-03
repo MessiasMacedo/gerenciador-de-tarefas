@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TaskFlow | Login</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+  <div class="auth-container">
+
+    <div class="auth-card">
+
+      <div class="auth-header">
+        <div class="app-logo">
+          <i class="bi bi-clipboard-check"></i>
+        </div>
+        <h4>TaskFlow</h4>
+        <small id="formSubtitle">Entre na sua conta</small>
+      </div>
+
+      <!-- LOGIN -->
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" id="loginEmail" class="form-control dark-input" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Senha</label>
+          <input type="password" id="loginPassword" class="form-control dark-input" required>
+        </div>
+
+        <button class="btn-auth">Entrar</button>
+
+        <p class="switch-text">
+          Não tem conta?
+          <span onclick="showRegister()">Criar agora</span>
+        </p>
+      </form>
+
+      <!-- CADASTRO -->
+      <form id="registerForm" class="d-none">
+        <div class="mb-3">
+          <label class="form-label">Nome</label>
+          <input type="text" id="regName" class="form-control dark-input" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" id="regEmail" class="form-control dark-input" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Senha</label>
+          <input type="password" id="regPassword" class="form-control dark-input" required>
+        </div>
+
+        <button class="btn-auth">Cadastrar</button>
+
+        <p class="switch-text">
+          Já tem conta?
+          <span onclick="showLogin()">Entrar</span>
+        </p>
+      </form>
+
+    </div>
+
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>

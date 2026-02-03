@@ -1,7 +1,9 @@
 package conn.Service;
 
 import conn.Model.Tarefa;
+import conn.Model.Usuario;
 import conn.Repository.TarefaRepository;
+import conn.Repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,12 +12,22 @@ import java.util.List;
 public class TarefaService {
 
     private final TarefaRepository repository;
+    private final UsuarioRepository usuarioRepo;
 
-    public TarefaService(TarefaRepository repository) {
+    public TarefaService(TarefaRepository repository, UsuarioRepository usuarioRepo) {
         this.repository = repository;
+        this.usuarioRepo = usuarioRepo;
     }
 
     public Tarefa criar(Tarefa tarefa) {
+
+        Long usuarioId = tarefa.getUsuario().getId();
+
+        Usuario usuario = usuarioRepo.findById(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        tarefa.setUsuario(usuario);
+
         return repository.save(tarefa);
     }
 
@@ -30,7 +42,7 @@ public class TarefaService {
         tarefa.setTitulo(novaTarefa.getTitulo());
         tarefa.setDescricao(novaTarefa.getDescricao());
         tarefa.setPrioridade(novaTarefa.getPrioridade());
-        tarefa.setStatus(novaTarefa.isStatus());
+        tarefa.setConcluida(novaTarefa.getConcluida());
 
         return repository.save(tarefa);
     }
