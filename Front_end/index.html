@@ -29,7 +29,7 @@
 
                 <div>
                     <div class="fw-semibold">TaskFlow</div>
-                    <div class="subtitle" id="userGreeting"><span id="userName"></span></div>
+                    <div class="subtitle" id="userName"></div>
                 </div>
             </div>
 
@@ -98,10 +98,10 @@
                 </button>
 
                 <div class="btn-group">
-                    <button class="btn btn-sm btn-dark active" id="cardView">
+                    <button class="btn btn-sm btn-dark active" id="viewCard">
                         <i class="bi bi-grid"></i> Cards
                     </button>
-                    <button class="btn btn-sm btn-dark" id="tableView">
+                    <button class="btn btn-sm btn-dark " id="viewTable">
                         <i class="bi bi-table"></i> Tabela
                     </button>
                 </div>
@@ -117,7 +117,7 @@
                 <small>Prioridade</small>
                 <div class="filter-group">
                     <button data-priority="all" class="filter-btn active">Todas</button>
-                    <button data-priority="tranquil" class="filter-btn">Tranquilo</button>
+                    <button data-priority="tranquilo" class="filter-btn">Tranquilo</button>
                     <button data-priority="normal" class="filter-btn">Normal</button>
                     <button data-priority="important" class="filter-btn">Importante</button>
                 </div>
@@ -144,7 +144,7 @@
 
         <div id="taskList" class="task-grid"></div>
 
-        <table id="taskTable" class="table table-dark table-hover mt-3">
+        <table id="taskTable" class="table table-dark table-hover mt-3 d-none">
             <thead>
                 <tr>
                     <th>Status</th>
@@ -278,7 +278,7 @@
     </script>
 
 
-    <script src="js/main.js"></script>
+    <script src="main.js"></script>
 
 
 

@@ -1,3 +1,5 @@
+const API_URL = "http://localhost:8080/Usuario";
+
 // ELEMENTOS
 const loginForm = document.getElementById("loginForm");
 const registerForm = document.getElementById("registerForm");
@@ -23,42 +25,56 @@ function showLogin() {
   subtitle.innerText = "Entre na sua conta";
 }
 
-// CADASTRO
-registerForm.addEventListener("submit", (e) => {
+//cadastro
+registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = regName.value;
+  const nome = regName.value;
   const email = regEmail.value;
-  const password = regPassword.value;
+  const senha = regPassword.value;
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const response = await fetch(`${API_URL}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ nome, email, senha })
+  });
 
-  if (users.find(u => u.email === email)) {
-    alert("Esse email já está cadastrado!");
+  if (!response.ok) {
+    alert("Erro ao cadastrar usuário");
     return;
   }
-
-  users.push({ name, email, password });
-  localStorage.setItem("users", JSON.stringify(users));
 
   alert("Conta criada com sucesso!");
   showLogin();
 });
 
+
 // LOGIN
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = loginEmail.value;
-  const password = loginPassword.value;
+  const senha = loginPassword.value;
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const user = users.find(u => u.email === email && u.password === password);
+  const response = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, senha })
+  });
 
-  if (!user) {
+  if (!response.ok) {
     alert("Email ou senha inválidos!");
     return;
   }
+
+  const user = await response.json();
+
+  // 🔥 SALVA USUÁRIO REAL (COM ID)
+  localStorage.setItem("loggedUser", JSON.stringify(user));
 
   window.location.href = "index.html";
 });
