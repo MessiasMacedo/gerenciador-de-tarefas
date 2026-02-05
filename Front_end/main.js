@@ -103,12 +103,14 @@ viewTableBtn.addEventListener("click", () => {
 
   renderTable();
 });
-
 function renderTasks(filterStatus = "all", filterPriority = "all") {
   const taskList = document.getElementById("taskList");
   const emptyState = document.getElementById("emptyState");
+  const tbody = document.querySelector("#taskTable tbody");
+  const tableWrapper = document.getElementById("taskTableWrapper");
 
   taskList.innerHTML = "";
+  tbody.innerHTML = "";
 
   let filtered = [...tasks];
 
@@ -125,78 +127,85 @@ function renderTasks(filterStatus = "all", filterPriority = "all") {
   }
 
   emptyState.classList.toggle("d-none", filtered.length > 0);
+// controle da tabela
+if (filtered.length === 0) {
+  tableWrapper.classList.add("d-none");
+} else {
+  tableWrapper.classList.remove("d-none");
+}
 
+  /* ================= CARDS ================= */
   filtered.forEach(task => {
     const card = document.createElement("div");
     card.className = `task-card-item ${task.concluida ? "task-done" : ""}`;
 
     card.innerHTML = `
       <div class="task-row">
-    
         <div class="complete-btn ${task.concluida ? "done" : ""}"
-             onclick="toggleTask(${task.id})">
-        </div>
-    
+          onclick="toggleTask(${task.id})"></div>
+
         <div class="task-content">
           <h6>${task.titulo}</h6>
           <small>${task.descricao}</small>
-    
+
           <div class="mt-2">
             <span class="badge badge-${task.prioridade}">
               ${task.prioridade}
             </span>
           </div>
         </div>
-    
+
         <div class="task-actions">
-          <button class="btn btn-sm ed" onclick="editTask(${task.id})">
+          <button class="btn ed" onclick="editTask(${task.id})">
             <i class="bi bi-pencil"></i>
           </button>
-    
-          <button class="btn btn-sm de" onclick="deleteTask(${task.id})">
+          <button class="btn de" onclick="deleteTask(${task.id})">
             <i class="bi bi-trash"></i>
           </button>
         </div>
-    
       </div>
     `;
+
     taskList.appendChild(card);
   });
-}
 
-function renderTable() {
-  const tbody = document.querySelector("#taskTable tbody");
-  tbody.innerHTML = "";
-
-  tasks.forEach(task => {
+  /* ================= TABELA ================= */
+  filtered.forEach(task => {
     const tr = document.createElement("tr");
+
+    if (task.concluida) {
+      tr.classList.add("task-done");
+    }
 
     tr.innerHTML = `
       <td>
         <div class="complete-btn ${task.concluida ? "done" : ""}"
-        onclick="toggleTask(${task.id})">
-       </div>
-     </td>
+          onclick="toggleTask(${task.id})"></div>
+      </td>
       <td>${task.titulo}</td>
       <td class="desc-cell">${task.descricao}</td>
-      <td><span class="badge badge-${task.prioridade}">
-      ${task.prioridade}
-       </span></td>
-       <td class="task-actions">
-       <button class="btn btn-sm ed" onclick="editTask(${task.id})">
-         <i class="bi bi-pencil"></i>
-       </button>
-     
-       <button class="btn btn-sm  de" onclick="deleteTask(${task.id})">
-         <i class="bi bi-trash"></i>
-       </button>
-     </td>
-    
+      <td>
+        <span class="badge badge-${task.prioridade}">
+          ${task.prioridade}
+        </span>
+      </td>
+      <td>
+        <div class="table-actions">
+          <button class="btn ed" onclick="editTask(${task.id})">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn de" onclick="deleteTask(${task.id})">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </td>
     `;
 
     tbody.appendChild(tr);
   });
 }
+
+
 
 
 /* =========================
@@ -222,9 +231,61 @@ function toggleTask(id) {
   updateTask(task);
 }
 
-function deleteTask(id) {
-  deleteTaskApi(id);
+let taskToEdit = null;
+
+function editTask(id) {
+  taskToEdit = tasks.find(t => t.id === id);
+
+  document.getElementById("editTitle").value = taskToEdit.titulo;
+  document.getElementById("editDesc").value = taskToEdit.descricao;
+
+  const modal = new bootstrap.Modal(
+    document.getElementById("editModal")
+  );
+
+  modal.show();
 }
+//confirmar edit
+document.getElementById("saveEdit").addEventListener("click", () => {
+  if (!taskToEdit) return;
+
+  taskToEdit.titulo =
+    document.getElementById("editTitle").value;
+
+  taskToEdit.descricao =
+    document.getElementById("editDesc").value;
+
+  updateTask(taskToEdit);
+  taskToEdit = null;
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("editModal")
+  ).hide();
+});
+
+function deleteTask(id) {
+  taskToDelete = id;
+
+  const modal = new bootstrap.Modal(
+    document.getElementById("deleteModal")
+  );
+
+  modal.show();
+}
+ 
+//confirmar delete
+document.getElementById("confirmDelete").addEventListener("click", () => {
+  if (taskToDelete !== null) {
+    deleteTaskApi(taskToDelete);
+    taskToDelete = null;
+  }
+
+  bootstrap.Modal.getInstance(
+    document.getElementById("deleteModal")
+  ).hide();
+});
+
+
 
 /* =========================
    ADD TASK
@@ -265,7 +326,22 @@ document.querySelectorAll("[data-status]").forEach(btn => {
     renderTasks(btn.dataset.status, currentPriority);
   });
 });
+document.querySelectorAll("[data-priority]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document
+      .querySelectorAll("[data-priority]")
+      .forEach(b => b.classList.remove("active"));
 
+    btn.classList.add("active");
+
+    currentPriority = btn.dataset.priority;
+
+    renderTasks(
+      document.querySelector("[data-status].active")?.dataset.status || "all",
+      currentPriority
+    );
+  });
+});
 /* =========================
    INIT
 ========================= */

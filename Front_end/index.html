@@ -47,7 +47,7 @@
 
         </div>
     </nav>
-  
+
     <div class="container mt-5">
 
         <div class="task-card mx-auto">
@@ -119,7 +119,7 @@
                     <button data-priority="all" class="filter-btn active">Todas</button>
                     <button data-priority="tranquilo" class="filter-btn">Tranquilo</button>
                     <button data-priority="normal" class="filter-btn">Normal</button>
-                    <button data-priority="important" class="filter-btn">Importante</button>
+                    <button data-priority="importante" class="filter-btn">Importante</button>
                 </div>
             </div>
 
@@ -144,19 +144,20 @@
 
         <div id="taskList" class="task-grid"></div>
 
-        <table id="taskTable" class="table table-dark table-hover mt-3 d-none">
-            <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>Título</th>
-                    <th>Descrição</th>
-                    <th>Prioridade</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-
+        <div id="taskTableWrapper" class="d-none">
+            <table id="taskTable" class="table table-dark table-hover mt-3 d-none">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Prioridade</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
         <!-- CONTADORES -->
 
         <div class="stats">

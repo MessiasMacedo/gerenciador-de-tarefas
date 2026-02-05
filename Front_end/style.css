@@ -339,6 +339,7 @@ body {
 }
 .de{
   color: rgb(175, 4, 4);
+
 }
 .task-actions .btn i {
   font-size: 15px; /* aumenta o tamanho */
@@ -372,9 +373,51 @@ body {
   color: #9ca3af;
   font-weight: 500;
 }
-#taskTable td.task-actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
+.desc-cell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-actions .btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.table-actions .btn i {
+  font-size: 17px;
+}
+
+
+.task-actions .btn {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.task-actions .btn i {
+  font-size: 17px;
+}
+
+#taskTable .task-done td:nth-child(2) {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+#taskTable .task-done td:nth-child(3) {
+  opacity: 0.5;
+}
+
+#taskTable .task-done td {
+  transition: opacity 0.2s ease;
+}
+
+#taskTable .task-done .badge,
+#taskTable .task-done i,
+#taskTable .task-done .complete-btn {
+  opacity: 0.5;
 }
