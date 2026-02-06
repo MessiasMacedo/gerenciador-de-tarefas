@@ -140,9 +140,9 @@ if (filtered.length === 0) {
     card.className = `task-card-item ${task.concluida ? "task-done" : ""}`;
 
     card.innerHTML = `
-      <div class="task-row">
+      <div class="task-row" onclick="viewTask(${task.id})">
         <div class="complete-btn ${task.concluida ? "done" : ""}"
-          onclick="toggleTask(${task.id})"></div>
+          onclick="event.stopPropagation(); toggleTask(${task.id})"></div>
 
         <div class="task-content">
           <h6>${task.titulo}</h6>
@@ -156,10 +156,10 @@ if (filtered.length === 0) {
         </div>
 
         <div class="task-actions">
-          <button class="btn ed" onclick="editTask(${task.id})">
+          <button class="btn ed" onclick="event.stopPropagation(); editTask(${task.id})">
             <i class="bi bi-pencil"></i>
           </button>
-          <button class="btn de" onclick="deleteTask(${task.id})">
+          <button class="btn de" onclick="event.stopPropagation(); deleteTask(${task.id})">
             <i class="bi bi-trash"></i>
           </button>
         </div>
@@ -173,6 +173,8 @@ if (filtered.length === 0) {
   filtered.forEach(task => {
     const tr = document.createElement("tr");
 
+    tr.onclick = () => viewTask(task.id);
+
     if (task.concluida) {
       tr.classList.add("task-done");
     }
@@ -180,7 +182,7 @@ if (filtered.length === 0) {
     tr.innerHTML = `
       <td>
         <div class="complete-btn ${task.concluida ? "done" : ""}"
-          onclick="toggleTask(${task.id})"></div>
+          onclick=" event.stopPropagation(); toggleTask(${task.id})"></div>
       </td>
       <td>${task.titulo}</td>
       <td class="desc-cell">${task.descricao}</td>
@@ -191,10 +193,10 @@ if (filtered.length === 0) {
       </td>
       <td>
         <div class="table-actions">
-          <button class="btn ed" onclick="editTask(${task.id})">
+          <button class="btn ed" onclick="event.stopPropagation(); editTask(${task.id})">
             <i class="bi bi-pencil"></i>
           </button>
-          <button class="btn de" onclick="deleteTask(${task.id})">
+          <button class="btn de"  onclick="event.stopPropagation(); deleteTask(${task.id})">
             <i class="bi bi-trash"></i>
           </button>
         </div>
@@ -225,6 +227,23 @@ function updateStats() {
 /* =========================
    AÇÕES
 ========================= */
+function viewTask(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task) return;
+
+  document.getElementById("viewTaskTitle").innerText = task.titulo;
+  document.getElementById("viewTaskDesc").innerText =
+    task.descricao || "Sem descrição";
+
+  const badge = document.getElementById("viewTaskPriority");
+  badge.className = `badge badge-${task.prioridade}`;
+  badge.innerText = task.prioridade;
+
+  new bootstrap.Modal(
+    document.getElementById("viewTaskModal")
+  ).show();
+}
+
 function toggleTask(id) {
   const task = tasks.find(t => t.id === id);
   task.concluida = !task.concluida;
@@ -341,6 +360,11 @@ document.querySelectorAll("[data-priority]").forEach(btn => {
       currentPriority
     );
   });
+});
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("loggedUser");
+  window.location.href = "login.html";
 });
 /* =========================
    INIT

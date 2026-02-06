@@ -14,25 +14,24 @@ public class TarefaService {
     private final TarefaRepository repository;
     private final UsuarioRepository usuarioRepo;
 
+
     public TarefaService(TarefaRepository repository, UsuarioRepository usuarioRepo) {
         this.repository = repository;
         this.usuarioRepo = usuarioRepo;
     }
 
-    public Tarefa criar(Tarefa tarefa) {
-
-        Long usuarioId = tarefa.getUsuario().getId();
-
+    public Tarefa criar(Tarefa tarefa, Long usuarioId) {
         Usuario usuario = usuarioRepo.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         tarefa.setUsuario(usuario);
-
         return repository.save(tarefa);
     }
 
-    public List<Tarefa> listar() {
-        return repository.findAll();
+    public List<Tarefa> listar(String email) {
+        Usuario usuario = usuarioRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return  repository.findByUsuario(usuario);
     }
 
     public Tarefa atualizar(Long id, Tarefa novaTarefa) {

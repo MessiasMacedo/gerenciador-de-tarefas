@@ -3,6 +3,7 @@ package conn.Controller;
 import conn.Model.Tarefa;
 import conn.Model.Usuario;
 import conn.Service.TarefaService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,15 +22,18 @@ public class TarefaController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<Tarefa> criar(@RequestBody Tarefa tarefa) {
-        Tarefa criada = service.criar(tarefa);
-        return ResponseEntity.status(201).body(criada);
+    @PostMapping("/{usuarioId}")
+    public ResponseEntity<Tarefa> criar(
+            @RequestBody Tarefa tarefa,
+            @PathVariable Long usuarioId
+    ) {
+        return ResponseEntity.status(201)
+                .body(service.criar(tarefa, usuarioId));
     }
 
     @GetMapping
-    public ResponseEntity<List<Tarefa>> listar() {
-        return ResponseEntity.ok(service.listar());
+    public ResponseEntity<List<Tarefa>> listar(@PathVariable String email) {
+        return ResponseEntity.ok(service.listar(email));
     }
 
     @PutMapping("/{id}")

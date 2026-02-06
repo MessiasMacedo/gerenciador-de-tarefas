@@ -8,6 +8,7 @@ body {
 
 }
 
+
 .navbar-custom {
   background: #181d25;
   border-bottom: 1px solid #1f2633;
@@ -215,7 +216,10 @@ body {
 }
 
 .modal-title {
-  font-weight: 600;
+  font-weight: 600px;
+}
+.ti{
+  font-size: 19px;
 }
 
 .modal-body {
@@ -332,6 +336,12 @@ body {
   min-width: 0; /* ISSO É CRÍTICO */
 }
 
+.task-content h6 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
 
 .ed{
   color: #7c8db5;
@@ -374,7 +384,7 @@ body {
   font-weight: 500;
 }
 .desc-cell {
-  max-width: 300px;
+  max-width: 100px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -416,8 +426,19 @@ body {
   transition: opacity 0.2s ease;
 }
 
+#taskTable tbody tr {
+  cursor: pointer;
+}
+
 #taskTable .task-done .badge,
 #taskTable .task-done i,
 #taskTable .task-done .complete-btn {
   opacity: 0.5;
+}
+
+#taskTable td:nth-child(2) {
+  max-width: 100px; /* ajuste ao seu layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
