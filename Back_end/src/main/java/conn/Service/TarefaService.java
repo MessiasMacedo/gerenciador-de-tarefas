@@ -20,11 +20,15 @@ public class TarefaService {
         this.usuarioRepo = usuarioRepo;
     }
 
-    public Tarefa criar(Tarefa tarefa, Long usuarioId) {
+    public Tarefa criar(Tarefa tarefa) {
+
+        Long usuarioId = tarefa.getUsuario().getId();
+
         Usuario usuario = usuarioRepo.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         tarefa.setUsuario(usuario);
+
         return repository.save(tarefa);
     }
 

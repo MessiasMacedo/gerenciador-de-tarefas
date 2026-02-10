@@ -32,8 +32,12 @@ document.querySelectorAll(".priority-btn").forEach(btn => {
    API
 ========================= */
 async function fetchTasks() {
-  const res = await fetch(API_URL);
+  const emailLogado = loggedUser.email;
+
+  const res = await fetch(`http://localhost:8080/tarefas?email=${emailLogado}`);
+
   tasks = await res.json();
+
   renderTasks("all", currentPriority);
   updateStats();
 

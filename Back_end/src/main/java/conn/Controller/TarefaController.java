@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/tarefas")
-@CrossOrigin(origins = "*")
 public class TarefaController {
 
     private final TarefaService service;
@@ -22,17 +22,15 @@ public class TarefaController {
     }
 
 
-    @PostMapping("/{usuarioId}")
-    public ResponseEntity<Tarefa> criar(
-            @RequestBody Tarefa tarefa,
-            @PathVariable Long usuarioId
-    ) {
+    @PostMapping
+    public ResponseEntity<Tarefa> criar(@RequestBody Tarefa tarefa) {
         return ResponseEntity.status(201)
-                .body(service.criar(tarefa, usuarioId));
+                .body(service.criar(tarefa));
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Tarefa>> listar(@PathVariable String email) {
+    public ResponseEntity<List<Tarefa>> listar(@RequestParam String email) {
         return ResponseEntity.ok(service.listar(email));
     }
 

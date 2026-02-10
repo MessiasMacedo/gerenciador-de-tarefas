@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/Usuario")
-@CrossOrigin(origins = "*")
+@RequestMapping("usuario")
 public class UsuarioController {
         private final UsuarioRepository repo;
 

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/Usuario";
+const API_URL = "http://localhost:8080/usuario";
 
 // ELEMENTOS
 const loginForm = document.getElementById("loginForm");
