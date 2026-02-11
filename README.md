@@ -93,8 +93,7 @@ Para validar a API REST, foram realizados testes utilizando o Postman:
 ```
 http://localhost:8080
 ```
-
-Após iniciar o backend, a aplicação já fica disponível e o frontend passa a consumir automaticamente a API.
+5. Após iniciar o backend, a aplicação já fica disponível e o frontend passa a consumir automaticamente a API.
 ---
 
 ## 📚 Aprendizados
