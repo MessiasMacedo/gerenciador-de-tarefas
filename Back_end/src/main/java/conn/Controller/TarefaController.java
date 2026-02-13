@@ -30,8 +30,12 @@ public class TarefaController {
 
 
     @GetMapping
-    public ResponseEntity<List<Tarefa>> listar(@RequestParam String email) {
-        return ResponseEntity.ok(service.listar(email));
+    public ResponseEntity<List<Tarefa>> listar(
+            @RequestParam String email,
+            @RequestParam(required = false) Boolean concluida,
+            @RequestParam(required = false) String prioridade
+    ) {
+        return ResponseEntity.ok(service.listar(email, concluida, prioridade));
     }
 
     @PutMapping("/{id}")

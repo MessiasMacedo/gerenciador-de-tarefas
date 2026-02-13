@@ -10,7 +10,14 @@ import java.util.List;
 @Repository
 public interface TarefaRepository extends JpaRepository<Tarefa, Long>{
     List<Tarefa> findByUsuario(Usuario usuario);
-/*
+
+    List<Tarefa> findByUsuarioAndConcluida(Usuario usuario, boolean concluida);
+
+    List<Tarefa> findByUsuarioAndPrioridade(Usuario usuario, String prioridade);
+
+    List<Tarefa> findByUsuarioAndConcluidaAndPrioridade(Usuario usuario, boolean concluida, String prioridade);
+
+    /*
 * aqui ele salva no banco
 * O Spring vai criar a implementação automaticamente
 *Tarefa  → qual entidade eu vou salvar

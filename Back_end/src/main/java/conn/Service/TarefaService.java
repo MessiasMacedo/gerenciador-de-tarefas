@@ -32,11 +32,30 @@ public class TarefaService {
         return repository.save(tarefa);
     }
 
-    public List<Tarefa> listar(String email) {
+    public List<Tarefa> listar(String email, Boolean concluida, String prioridade) {
+
         Usuario usuario = usuarioRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-        return  repository.findByUsuario(usuario);
+
+        // nenhum filtro
+        if(concluida == null && prioridade == null){
+            return repository.findByUsuario(usuario);
+        }
+
+        // filtro só por concluída
+        if(concluida != null && prioridade == null){
+            return repository.findByUsuarioAndConcluida(usuario, concluida);
+        }
+
+        // filtro só por prioridade
+        if(concluida == null){
+            return repository.findByUsuarioAndPrioridade(usuario, prioridade);
+        }
+
+        // filtro por ambos
+        return repository.findByUsuarioAndConcluidaAndPrioridade(usuario, concluida, prioridade);
     }
+
 
     public Tarefa atualizar(Long id, Tarefa novaTarefa) {
         Tarefa tarefa = repository.findById(id)

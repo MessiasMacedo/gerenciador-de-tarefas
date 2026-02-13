@@ -31,20 +31,32 @@ document.querySelectorAll(".priority-btn").forEach(btn => {
 /* =========================
    API
 ========================= */
-async function fetchTasks() {
+async function fetchTasks(status = null, priority = null) {
   const emailLogado = loggedUser.email;
 
-  const res = await fetch(`http://localhost:8080/tarefas?email=${emailLogado}`);
+  let url = `http://localhost:8080/tarefas?email=${emailLogado}`;
 
+  // filtro de status
+  if (status === "pending") {
+    url += `&concluida=false`;
+  }
+
+  if (status === "done") {
+    url += `&concluida=true`;
+  }
+
+  // filtro de prioridade
+  if (priority && priority !== "all") {
+    url += `&prioridade=${priority}`;
+  }
+
+  const res = await fetch(url);
   tasks = await res.json();
 
-  renderTasks("all", currentPriority);
+  renderTasks();
   updateStats();
-
-  if (!taskTable.classList.contains("d-none")) {
-    renderTable();
-  }
 }
+
 
 async function createTask(task) {
   try {
@@ -107,7 +119,7 @@ viewTableBtn.addEventListener("click", () => {
 
   renderTable();
 });
-function renderTasks(filterStatus = "all", filterPriority = "all") {
+function renderTasks() {
   const taskList = document.getElementById("taskList");
   const emptyState = document.getElementById("emptyState");
   const tbody = document.querySelector("#taskTable tbody");
@@ -116,30 +128,17 @@ function renderTasks(filterStatus = "all", filterPriority = "all") {
   taskList.innerHTML = "";
   tbody.innerHTML = "";
 
-  let filtered = [...tasks];
 
-  if (filterStatus === "pending") {
-    filtered = filtered.filter(t => !t.concluida);
-  }
-
-  if (filterStatus === "done") {
-    filtered = filtered.filter(t => t.concluida);
-  }
-
-  if (filterPriority !== "all") {
-    filtered = filtered.filter(t => t.prioridade === filterPriority);
-  }
-
-  emptyState.classList.toggle("d-none", filtered.length > 0);
+  emptyState.classList.toggle("d-none", tasks.length > 0);
 // controle da tabela
-if (filtered.length === 0) {
+if (tasks.length === 0) {
   tableWrapper.classList.add("d-none");
 } else {
   tableWrapper.classList.remove("d-none");
 }
 
   /* ================= CARDS ================= */
-  filtered.forEach(task => {
+  tasks.forEach(task => {
     const card = document.createElement("div");
     card.className = `task-card-item ${task.concluida ? "task-done" : ""}`;
 
@@ -174,7 +173,7 @@ if (filtered.length === 0) {
   });
 
   /* ================= TABELA ================= */
-  filtered.forEach(task => {
+  tasks.forEach(task => {
     const tr = document.createElement("tr");
 
     tr.onclick = () => viewTask(task.id);
@@ -342,11 +341,16 @@ const filtersBox = document.getElementById("filters");
 filterToggle.addEventListener("click", () => {
   filtersBox.classList.toggle("d-none");
 });
+let currentStatus = "all";
+
 document.querySelectorAll("[data-status]").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll("[data-status]").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    renderTasks(btn.dataset.status, currentPriority);
+
+    currentStatus = btn.dataset.status;
+
+    fetchTasks(currentStatus, currentPriority);
   });
 });
 document.querySelectorAll("[data-priority]").forEach(btn => {
@@ -359,10 +363,7 @@ document.querySelectorAll("[data-priority]").forEach(btn => {
 
     currentPriority = btn.dataset.priority;
 
-    renderTasks(
-      document.querySelector("[data-status].active")?.dataset.status || "all",
-      currentPriority
-    );
+    fetchTasks(currentStatus, currentPriority);
   });
 });
 
@@ -373,4 +374,4 @@ document.getElementById("logoutBtn").addEventListener("click", () => {
 /* =========================
    INIT
 ========================= */
-fetchTasks();
+fetchTasks("all", "all");
