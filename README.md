@@ -45,7 +45,7 @@ Aplicação web para gerenciamento simples de tarefas, desenvolvida como projeto
 * Cada usuário visualiza apenas as **suas próprias tarefas**
 * Criar, editar e excluir tarefas
 * Listagem das tarefas em **formato tabela** e também em **cards**
-* Filtro e pesquisa de tarefas
+* Filtro
 * As tarefas permanecem vinculadas ao usuário mesmo após sair e entrar novamente na conta
 * Interface organizada utilizando Bootstrap
 ---
