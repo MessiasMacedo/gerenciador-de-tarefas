@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8
+    container_name: back_end
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Gerenciador_Tarefas
+    ports:
+        - "3306:3306"
+    volumes:
+        - Gerenciador_Tarefas:/var/lib/mysql
+volumes:
+  Gerenciador_Tarefas:
