@@ -38,7 +38,6 @@ Aplicação web para gerenciamento simples de tarefas, desenvolvida como projeto
 * **Docker** (containerização da aplicação)
 * Git
 * GitHub
-* Docker
 * Postman
 
 
