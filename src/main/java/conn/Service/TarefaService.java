@@ -1,5 +1,6 @@
 package conn.Service;
 
+import conn.Controller.DadosAtualizacaoTarefa;
 import conn.Model.Tarefa;
 import conn.Model.Usuario;
 import conn.Repository.TarefaRepository;
@@ -57,14 +58,15 @@ public class TarefaService {
     }
 
 
-    public Tarefa atualizar(Long id, Tarefa novaTarefa) {
+    public Tarefa atualizar(Long id, DadosAtualizacaoTarefa dados) {
+
         Tarefa tarefa = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
 
-        tarefa.setTitulo(novaTarefa.getTitulo());
-        tarefa.setDescricao(novaTarefa.getDescricao());
-        tarefa.setPrioridade(novaTarefa.getPrioridade());
-        tarefa.setConcluida(novaTarefa.getConcluida());
+        tarefa.setTitulo(dados.titulo());
+        tarefa.setDescricao(dados.descricao());
+        tarefa.setPrioridade(dados.prioridade());
+        tarefa.setConcluida(dados.concluida());
 
         return repository.save(tarefa);
     }

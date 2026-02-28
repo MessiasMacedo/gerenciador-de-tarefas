@@ -6,6 +6,7 @@ import conn.Repository.UsuarioRepository;
 import conn.Service.LoginRequest;
 import conn.Service.LoginResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -13,11 +14,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("usuario")
 public class UsuarioController {
+
         private final UsuarioRepository repo;
 
-        public UsuarioController(UsuarioRepository repo) {
-            this.repo = repo;
-        }
+        private final PasswordEncoder passwordEncoder;
+
+    public UsuarioController(UsuarioRepository repo, PasswordEncoder passwordEncoder) {
+        this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
         @PostMapping("/register")
         public ResponseEntity<?> register(@RequestBody Usuario usuario) {
@@ -26,26 +31,10 @@ public class UsuarioController {
                 return ResponseEntity.badRequest().body("Email já cadastrado");
             }
 
-            repo.save(usuario);
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+            repo.save(usuario);repo.save(usuario);
             return ResponseEntity.ok("Usuário criado");
         }
 
-        @PostMapping("/login")
-        public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-
-            Optional<Usuario> opt = repo.findByEmail(request.email);
-
-            if (opt.isEmpty()) {
-                return ResponseEntity.status(401).body("Credenciais inválidas");
-            }
-
-            Usuario usuario = opt.get();
-
-            if (!usuario.getSenha().equals(request.senha)) {
-                return ResponseEntity.status(401).body("Credenciais inválidas");
-            }
-
-            return ResponseEntity.ok(new LoginResponse(usuario));
-        }
     }
 

@@ -50,15 +50,13 @@ registerForm.addEventListener("submit", async (e) => {
   showLogin();
 });
 
-
-// LOGIN
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = loginEmail.value;
   const senha = loginPassword.value;
 
-  const response = await fetch(`${API_URL}/login`, {
+  const response = await fetch("http://localhost:8080/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -66,15 +64,18 @@ loginForm.addEventListener("submit", async (e) => {
     body: JSON.stringify({ email, senha })
   });
 
-  if (!response.ok) {
-    alert("Email ou senha inválidos!");
-    return;
+  if (response.ok) {
+
+    const data = await response.json(); // <-- PEGA A RESPOSTA
+
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.usuario));
+
+    window.location.href = "index.html";
+
+  } else {
+    alert("Login inválido");
   }
-
-  const user = await response.json();
-
-  // 🔥 SALVA USUÁRIO REAL (COM ID)
-  localStorage.setItem("loggedUser", JSON.stringify(user));
-
-  window.location.href = "index.html";
 });
+
+

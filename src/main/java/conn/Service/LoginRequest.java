@@ -1,6 +1,4 @@
 package conn.Service;
 
-public class LoginRequest {
-    public String email;
-    public String senha;
+public record LoginRequest(String email, String senha) {
 }

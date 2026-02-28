@@ -7,6 +7,8 @@ import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.List;
 
 
@@ -23,9 +25,11 @@ public class TarefaController {
 
 
     @PostMapping
-    public ResponseEntity<Tarefa> criar(@RequestBody Tarefa tarefa) {
-        return ResponseEntity.status(201)
-                .body(service.criar(tarefa));
+    public ResponseEntity<Tarefa> criar(@RequestBody Tarefa tarefa, UriComponentsBuilder uriBuilder) {
+      Tarefa tarefasalva =service.criar(tarefa);
+       var uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefasalva.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(tarefasalva);
     }
 
 
@@ -41,9 +45,9 @@ public class TarefaController {
     @PutMapping("/{id}")
     public ResponseEntity<Tarefa> atualizar(
             @PathVariable Long id,
-            @RequestBody Tarefa tarefa
+            @RequestBody DadosAtualizacaoTarefa dados
     ) {
-        return ResponseEntity.ok(service.atualizar(id, tarefa));
+        return ResponseEntity.ok(service.atualizar(id, dados));
     }
 
     @DeleteMapping("/{id}")
