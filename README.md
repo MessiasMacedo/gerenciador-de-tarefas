@@ -22,6 +22,7 @@ Aplicação web para gerenciamento simples de tarefas, desenvolvida como projeto
 * Spring Web
 * Spring Data JPA
 * Spring Security
+* Springdoc OpenAPI
 * JWT (Auth0 Java JWT)
 * API REST
 * Maven
@@ -109,6 +110,16 @@ Para validar a API REST, foram realizados testes utilizando o Postman:
 
  * Identificação e correção de erros
 
+## 📖 Documentação da API (Swagger)
+A API possui documentação interativa gerada automaticamente utilizando Springdoc OpenAPI (Swagger UI).
+Para acessar documentação:
+```
+http://localhost:8080/swagger-ui/index.html
+```
+ou
+```
+http://localhost:8080/swagger-ui.html
+```
 ---
 ## ▶️ Como Executar o Projeto
 
