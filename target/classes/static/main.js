@@ -1,9 +1,32 @@
-const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+const token = localStorage.getItem("token");
+const loggedUser = JSON.parse(localStorage.getItem("user"));
 
-if (!loggedUser) {
-  window.location.href = "login.html";
+if (!token || !loggedUser) {
+  window.location.href = "Login.html";
 }
 
+async function authFetch(url, options = {}) {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + token,
+    ...options.headers
+  };
+
+  const response = await fetch(url, {
+    ...options,
+    headers
+  });
+
+  if (response.status === 403 || response.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "Login.html";
+  }
+
+  return response;
+}
 // mostra o nome corretamente
 document.getElementById("userName").innerText = `Olá, ${loggedUser.nome}!`;
 
@@ -50,7 +73,7 @@ async function fetchTasks(status = null, priority = null) {
     url += `&prioridade=${priority}`;
   }
 
-  const res = await fetch(url);
+const res = await authFetch(url);
   tasks = await res.json();
 
   renderTasks();
@@ -60,7 +83,7 @@ async function fetchTasks(status = null, priority = null) {
 
 async function createTask(task) {
   try {
-    const res = await fetch(API_URL, {
+    const res = await authFetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(task)
@@ -81,16 +104,15 @@ async function createTask(task) {
 }
 
 async function updateTask(task) {
-  await fetch(`${API_URL}/${task.id}`, {
+  await authFetch(`${API_URL}/${task.id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(task)
   });
   fetchTasks();
 }
 
 async function deleteTaskApi(id) {
-  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  await authFetch(`${API_URL}/${id}`, { method: "DELETE" });
   fetchTasks();
 }
 
@@ -368,8 +390,8 @@ document.querySelectorAll("[data-priority]").forEach(btn => {
 });
 
 document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("loggedUser");
-  window.location.href = "login.html";
+  localStorage.removeItem("token");
+  window.location.href = "Login.html";
 });
 /* =========================
    INIT
