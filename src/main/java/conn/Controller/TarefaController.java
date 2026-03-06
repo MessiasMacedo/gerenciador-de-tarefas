@@ -3,6 +3,7 @@ package conn.Controller;
 import conn.Model.Tarefa;
 import conn.Model.Usuario;
 import conn.Service.TarefaService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/tarefas")
+@SecurityRequirement(name = "bearer-key")
 public class TarefaController {
 
     private final TarefaService service;
